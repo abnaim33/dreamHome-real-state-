@@ -1,24 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { housesData } from '../../data';
 import { BiBed, BiBath, BiArea, BiPhone } from 'react-icons/bi';
 import Link from 'next/link';
-import { useRouter } from 'next/router'
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Image from 'next/image'
-const PropertyDetails = () => {
-    const router = useRouter()
-    const [loading, setLoading] = useState(false)
+const PropertyDetails = ({ property }) => {
 
-    const { id } = router.query
-
-
-
-
-    const property = housesData.find((house) => {
-        return house.id === parseInt(id);
-    });
 
     return (
         <div className='max-w-[1440px] mx-auto bg-white'>
@@ -118,5 +107,19 @@ const PropertyDetails = () => {
         </div>
     );
 };
+
+
+
+export async function getServerSideProps({ params: { id } }) {
+    const property = housesData.find((house) => {
+        return house.id === parseInt(id);
+    });
+
+    return {
+        props: { property }
+    }
+}
+
+
 
 export default PropertyDetails;
